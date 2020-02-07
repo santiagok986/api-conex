@@ -105,20 +105,15 @@ export default {
   methods: {
     onSubmitted() {
       this.newModule.cour.id = this.coursid
+      this.$store.dispatch('add_module', this.newModule)
+      .then(()=>{this.$emit("closeNewModule", false);})
 
-      this.$axios
-        .$post("http://localhost:1337/modules", this.newModule)
-        .then(result => {
-          console.log("done!");
-          this.$emit("closeNewModule", false);
-        })
-        .catch(error => console.log(error));
     }
   },
   computed:{
       cours(){
-          return this.$store.getters.LOAD_COURS;
-      }
+          return this.$store.getters.load_cours;
+      },
   }
 };
 </script>
