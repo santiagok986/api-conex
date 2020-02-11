@@ -105,7 +105,7 @@ export default {
   methods: {
     onSubmitted() {
       this.newModule.cour.id = this.coursid
-      this.$store.dispatch('add_module', this.newModule)
+      this.$store.dispatch('addModule', this.newModule)
       .then(()=>{this.$emit("closeNewModule", false);})
 
     }

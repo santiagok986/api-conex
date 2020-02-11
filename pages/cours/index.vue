@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    your are logged!!
+   
       <v-list> 
         <v-list-item
           v-for="(cour, i) in cours"
@@ -22,6 +22,10 @@
 
 <script>
 export default {
+  asyncData({context,store}) {
+    return store.dispatch('getData')
+    .then(()=> console.log('fire!!'))
+  },
   computed: {
     cours() {
       return this.$store.getters.load_cours;

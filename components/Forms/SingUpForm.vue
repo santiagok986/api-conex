@@ -46,9 +46,9 @@ export default {
     return {
       show1: false,
       show2: false,
-      username: "",
-      email: "",
-      password: "",
+      username: "santy",
+      email: "santy@super.ca",
+      password: "demo1234",
       confirmPassword: "",
       isLogin: true,
       rules: {
@@ -60,17 +60,10 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("authenticateUser", {
-        isLogin: this.isLogin,
+      this.$store.dispatch("loginUser", {
         username: this.username,
-        email: this.email,
         password: this.password
-      }).then(()=> this.$router.push('/cours'))
-      //   this.$store.dispatch('authenticateUser', {
-      //       isLogin:this.isLogin,
-      //       email:this.email,
-      //       password:this.password
-      //   }).then(()=> this.$router.push('/dashboard'))
+      });
     }
   }
 };

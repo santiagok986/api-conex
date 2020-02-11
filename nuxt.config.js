@@ -42,7 +42,11 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
+  axios: {
+    baseURL: 'http://localhost:1337/'
+  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -71,7 +75,26 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
+    }
+  },
+  auth: {
+    redirect: {
+      login: '/',
+      logout: '/',
+      callback: '/',
+      home: '/cours'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'auth/local/', method: 'post', propertyName: 'jwt' },
+          user: { url: 'users/me', method: 'get', propertyName: false },
+          logout: false
+        }
+        // tokenRequired: true,
+        // tokenType: 'Bearer'
+      }
     }
   }
 }

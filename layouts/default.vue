@@ -17,12 +17,19 @@
 
       <v-toolbar-title v-text="title" />
       <v-spacer />
-
-      <v-menu v-model="usermenu" :close-on-content-click="false" :nudge-width="200" offset-y>
+      <!-- <div v-if="$auth.loggedIn">
+        <p>{{$auth.user.username}}</p>
+        <v-btn text @click="$auth.logout()">logout</v-btn>
+      </div>
+      <div v-else>
+        <v-btn text to="/login">login</v-btn>
+      </div> -->
+  
+      <v-menu v-if="$auth.loggedIn" v-model="usermenu" :close-on-content-click="false" :nudge-width="200" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-avatar size="42" color="primary">
-              <span class="white--text headline">{{userInfo.username[0]}}</span>
+              <span class="white--text headline">{{$auth.user.username[0]}}</span>
             </v-avatar>
           </v-btn>
         </template>
@@ -32,13 +39,13 @@
             <v-list-item>
               <v-list-item-avatar>
                 <v-avatar size="42" color="primary">
-                  <span class="white--text headline">{{userInfo.username[0]}}</span>
+                  <span class="white--text headline">{{$auth.user.username[0]}}</span>
                 </v-avatar>
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title>{{userInfo.username}}</v-list-item-title>
-                <v-list-item-subtitle>{{userInfo.email}}</v-list-item-subtitle>
+                <v-list-item-title>{{$auth.user.username}}</v-list-item-title>
+                <v-list-item-subtitle>{{$auth.user.email}}</v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-action></v-list-item-action>
@@ -51,10 +58,13 @@
             <v-spacer></v-spacer>
 
             <v-btn text @click="usermenu = false">Cancel</v-btn>
-            <v-btn color="primary" text @click="usermenu = false">Save</v-btn>
+            <v-btn text @click="$auth.logout()">logout</v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>
+       <v-btn v-else text to="/">login</v-btn>
+
+
     </v-app-bar>
 
     <v-content>
@@ -71,7 +81,8 @@
 
 <script>
 export default {
-  middleware: ["check-auth", "auth"],
+ // middleware: ["check-auth", "auth"],
+ middleware:'auth',
   data() {
     return {
       clipped: false,
@@ -95,6 +106,11 @@ export default {
     },
     userInfo() {
       return this.$store.getters.user_info;
+    }
+  },
+  methods:{
+    logoutBtn(){
+        
     }
   }
 };
