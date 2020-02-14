@@ -14,9 +14,18 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title v-text="cour.code" />
+           
           </v-list-item-content>
+          
         </v-list-item>
       </v-list>
+      <v-divider></v-divider>
+      <div v-for="cour in cours" :key="cour.id">
+          <p class="mb-0" v-for="(value, key) in cour" :key="key">{{key}}:{{value}} </p>
+          <v-divider></v-divider>
+      </div>
+      
+
   </v-container>
 </template>
 

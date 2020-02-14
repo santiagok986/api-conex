@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form>
+    <v-form @submit.prevent="onSubmitted">
       <!-- <v-text-field v-model="projectInfo.isbn" label="ISBN" required outlined></v-text-field> -->
       <v-text-field v-model="newModule.Title" label="Titre" required outlined></v-text-field>
       <v-text-field v-model="newModule.IdModule" label="Id Module" required outlined></v-text-field>
@@ -9,9 +9,10 @@
       <v-text-field v-model="newModule.Color" label="Color" required outlined></v-text-field>
       <v-text-field v-model="newModule.Version" label="Version" required outlined></v-text-field>
       <v-switch v-model="newModule.Active" label="Actif"></v-switch>
-      <v-btn @click="onSubmitted">send data</v-btn>
+      <v-btn type="submit">send data</v-btn>
     </v-form>
     {{cours}}
+    {{coursid}}
     <!-- 
     <v-text-field v-model="projectInfo.isbn" label="ISBN" required outlined></v-text-field>
       <v-text-field v-model="projectInfo.name" label="Name" required outlined></v-text-field>

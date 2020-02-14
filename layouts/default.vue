@@ -22,10 +22,11 @@
         <v-btn text @click="$auth.logout()">logout</v-btn>
       </div>
       <div v-else>
-        <v-btn text to="/login">login</v-btn>
+        <v-btn text to="/">login</v-btn>
       </div> -->
-  
-      <v-menu v-if="$auth.loggedIn" v-model="usermenu" :close-on-content-click="false" :nudge-width="200" offset-y>
+    
+        
+      <v-menu  v-model="menuusager" :close-on-content-click="false" :nudge-width="200" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-avatar size="42" color="primary">
@@ -57,12 +58,13 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn text @click="usermenu = false">Cancel</v-btn>
+            <v-btn text @click="menuusager = false">Cancel</v-btn>
             <v-btn text @click="$auth.logout()">logout</v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>
-       <v-btn v-else text to="/">login</v-btn>
+     
+  
 
 
     </v-app-bar>
@@ -88,7 +90,7 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
-      usermenu: false,
+      menuusager: false,
       items: [
         {
           icon: "mdi-apps",
@@ -107,6 +109,9 @@ export default {
     userInfo() {
       return this.$store.getters.user_info;
     }
+  },
+  watch:{
+
   },
   methods:{
     logoutBtn(){

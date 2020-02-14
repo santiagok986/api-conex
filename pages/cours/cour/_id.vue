@@ -15,11 +15,16 @@
         <v-card-title class="headline">Nouveau module</v-card-title>
         <v-card-text>
           <v-container>
-            <add-module :coursid="infoCours.id" @closeNewModule="dialogModule = $event" />
+            <add-module :coursid="infoCours.id" @closeNewModule="loadNewModule($event)" />
           </v-container>
         </v-card-text>
       </v-card>
     </v-dialog>
+
+    <v-card
+    v-if="infoCours.modules.length != 0"
+    class="mx-auto my-3"
+    >
     <v-list>
       <v-list-group
         v-for="mymodule in infoCours.modules"
@@ -33,49 +38,47 @@
           </v-list-item-content>
         </template>
 
-        <v-container>{{mymodule.SubTitle}}</v-container>
+        <v-container>{{mymodule.SubTitle}}
+          {{mymodule.task}}
+        </v-container>
       </v-list-group>
     </v-list>
+    </v-card>
+     
+     
 
-    <p>info : {{infoCours}}</p>
+   
   </v-container>
 </template>
 
 <script>
-import AddModule from "../../../components/AddModule";
+import AddModule from "../../../components/Forms/AddModule";
+
 
 export default {
   components: {
-    AddModule
-  },
-  computed: {
-    infoCours() {
-      return this.$store.getters.load_cour;
-    }
+    AddModule,
   },
   async fetch({store, route, error }) {
-    await store.dispatch("getDataCour", {route, error});
-
-    // app.$axios.$get("cours/" + route.params.id, {
-    //     headers: {
-    //       Authorization: app.$auth.getToken("local")
-    //     }
-    //   })
-    //   .then(res => {
-    //     console.log('rest')
-    //   }).catch((e) => {
-    //     error({ statusCode: 404, message: 'Post not found' })
-    //   })
-
-
+    console.log('id from _id ', route.params.id)
+    await store.dispatch("getDataCour", route.params.id)
   },
   data() {
     return {
       dialogModule: false
     };
   },
-  mounted() {
-    console.log("cours details");
+  computed: {
+    infoCours() {
+      return this.$store.getters.load_cour;
+    }
+  },
+  methods: {
+    loadNewModule(event){
+      this.dialogModule = event
+      this.$store.dispatch("getDataCour", this.$route.params.id)
+      console.log('load new module ', this.$route.params.id )
+    }
   }
 };
 </script>

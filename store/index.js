@@ -17,6 +17,12 @@ export const mutations = {
 }
 
 export const actions = {
+    nuxtServerInit(vuexContext) {
+        if (this.$auth.loggedIn) {
+            console.log('get from init')
+            vuexContext.dispatch('getData')
+        }
+    },
     loginUser(vuexContext, authData) {
 
         this.$auth.loginWith('local', {
@@ -40,12 +46,11 @@ export const actions = {
             for (const key in res) {
                 coursArray.push({ ...res[key] })
             }
-            console.log(coursArray)
             vuexContext.commit('setCours', coursArray)
         }).catch(error => console.log(error))
     },
     getDataCour(vuexContext, myContext) {
-        return this.$axios.$get("cours/" + myContext.route.params.id, {
+        return this.$axios.$get("cours/" + myContext, {
             headers: {
                 Authorization: this.$auth.getToken('local')
             }
@@ -53,23 +58,20 @@ export const actions = {
             .then(res => {
                 vuexContext.commit('setCour', res)
             }).catch((e) => {
-                console.log(e)
-                myContext.error({ statusCode: 401, message: 'Cour pas trouvé' })
+                return e
+                //myContext.error({ statusCode: 401, message: 'Cour pas trouvé' })
             })
     },
     addModule(vuexContext, newModule) {
-        return this.$axios
-            .$post("modules/", {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': this.$auth.getToken('local')
-                },
-                data: JSON.stringify(newModule)
-            })
-            .then(result => {
-                console.log("done!");
-            })
-            .catch(error => console.log(error));
+        console.log(newModule)
+        this.$axios({
+            method: 'post',
+            url: 'modules',
+            headers: {
+                Authorization: this.$auth.getToken('local')
+            },
+            data: newModule
+        }).then(() => vuexContext.dispatch('getDataCour', newModule.cour.id))
     }
 }
 

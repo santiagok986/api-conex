@@ -1,7 +1,5 @@
 <template>
-   <v-container class="pt-5">
-    
-    
+  <v-container class="pt-5">
     <!-- <v-row>
       <v-col cols="4" v-for="(color, i) in colors" :key="i">
         <template v-for="(key, j) in color">
@@ -9,8 +7,8 @@
           <v-sheet v-else  :key="j" height="20" elevation="1" :color="key" :tile="false" class="mb-1"></v-sheet>
         </template>
       </v-col>
-    </v-row> -->
-     
+    </v-row>-->
+  {{dones}}
     <v-card class="mx-auto mt-5" max-width="500" outlined shaped>
       <v-avatar color="primary">
         <v-icon dark>mdi-account-circle</v-icon>
@@ -21,46 +19,50 @@
         <sing-up-form></sing-up-form>
       </v-container>
     </v-card>
-  
 
     <!-- <v-color-picker class="ma-2" show-swatches swatches-max-height="300px"></v-color-picker> -->
   </v-container>
 </template>
 
 <script>
-import AddModule from "../components/AddModule";
-import SingUpForm from "../components/Forms/SingUpForm"
-
+import SingUpForm from "../components/Forms/SingUpForm";
 
 export default {
-  //layout:'login',
+  layout: "login",
   data() {
     return {
-
+      dones:null
     };
   },
   components: {
-    AddModule,
     SingUpForm
   },
   computed: {
     colors() {
       return this.$store.getters.load_colors;
     },
-    cours(){
+    cours() {
       return this.$store.getters.load_cours;
     }
+  },
+  async mounted() {
+    try {
+      var result = await this.$axios({
+        method: "post",
+        url: "/graphql",
+        data: {
+          query: `
+                query{
+                  modules{
+                    Title
+                  }
+                }      
+              `
+        }
+      }).then(res => this.dones = res.data.data.modules);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  // async asyncData({ $axios }) {
-  //   const ip = await $axios
-  //     .$get("http://localhost:1337/modules")
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-  //     .catch(e => console.log(e));
-
-  //   return { ip };
-  // }
-
 };
 </script>
