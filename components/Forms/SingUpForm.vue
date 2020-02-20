@@ -60,10 +60,18 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("loginUser", {
-        username: this.username,
-        password: this.password
-      });
+      if (this.isLogin) {
+        this.$store.dispatch("loginUser", {
+          username: this.username,
+          password: this.password
+        });
+      } else {
+        this.$store.dispatch("newUser", {
+          username: this.username,
+          email: this.email,
+          password: this.password
+        });
+      }
     }
   }
 };

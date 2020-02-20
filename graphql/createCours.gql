@@ -1,0 +1,10 @@
+mutation ($code: String) {
+  createCour(input:{
+   data:{
+    code:$code
+  	}
+  })
+  {
+    cour{code}
+  }
+}

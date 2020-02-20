@@ -45,10 +45,43 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    '@nuxtjs/apollo'
   ],
+  ////changer les deux url pour faire les querys
+  ///pour apollo c'est obligatoire ajouter le /graphql
+  ///pour axios c'est la base, le /graphql peut se mettre sur le query même
   axios: {
     baseURL: 'http://localhost:1337/'
+  },
+  apollo: {
+    authenticationType:"",
+    clientConfigs: {
+      default: {
+        // required  
+        httpEndpoint: 'http://localhost:1337/graphql',
+      }
+    }
+  },
+  ///configuration de l'autentication
+  auth: {
+    redirect: {
+      login: '/',
+      logout: '/',
+      callback: '/',
+      home: '/cours'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'auth/local/', method: 'post', propertyName: 'jwt' },
+          user: { url: 'users/me', method: 'get', propertyName: false },
+          logout: false
+        }
+        // tokenRequired: true,
+        // tokenType: 'Bearer'
+      }
+    }
   },
   /*
   ** vuetify module configuration
@@ -81,23 +114,5 @@ export default {
     extend(config, ctx) {
     }
   },
-  auth: {
-    redirect: {
-      login: '/',
-      logout: '/',
-      callback: '/',
-      home: '/cours'
-    },
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: 'auth/local/', method: 'post', propertyName: 'jwt' },
-          user: { url: 'users/me', method: 'get', propertyName: false },
-          logout: false
-        }
-        // tokenRequired: true,
-        // tokenType: 'Bearer'
-      }
-    }
-  }
+ 
 }

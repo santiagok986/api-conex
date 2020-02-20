@@ -31,23 +31,40 @@ export const actions = {
                 password: authData.password
             }
         }).then(() => {
+            this.$apolloHelpers.onLogin(this.$auth.getToken('local'))
             //vuexContext.dispatch('getData')
         })
             .catch(e => console.log('errorx ', e))
 
     },
+    newUser(vuexContext, authData) {
+        var authURL = "auth/local/register";
+        var userData = {
+            username: authData.username,
+            email: authData.email,
+            password: authData.password
+        };
+        return this.$axios
+            .$post(authURL, userData)
+            .then(response => console.log(response))
+    },
     getData(vuexContext) {
-        return this.$axios.$get('cours', {
-            headers: {
-                Authorization: this.$auth.getToken('local')
-            }
-        }).then(res => {
-            const coursArray = []
-            for (const key in res) {
-                coursArray.push({ ...res[key] })
-            }
-            vuexContext.commit('setCours', coursArray)
-        }).catch(error => console.log(error))
+        let client = this.app.apolloProvider.defaultClient
+       return client
+            .query({
+                query: require("../graphql/cours.gql")
+            })
+            .then(res => {
+                const coursArray = []
+                for (const key in res.data.cours) {
+                    coursArray.push({ ...res.data.cours[key] })
+                }
+                console.log("res ", res.data.cours)
+                console.log('coursa ', coursArray)
+                vuexContext.commit('setCours', coursArray)
+            })
+            .catch(e => console.log('el error es ', e));
+
     },
     getDataCour(vuexContext, myContext) {
         return this.$axios.$get("cours/" + myContext, {
@@ -75,7 +92,86 @@ export const actions = {
     }
 }
 
+/*  axios actions*/
 
+/*
+
+export const actions = {
+    nuxtServerInit(vuexContext) {
+        if (this.$auth.loggedIn) {
+            console.log('get from init')
+            vuexContext.dispatch('getData')
+        }
+    },
+    loginUser(vuexContext, authData) {
+
+        this.$auth.loginWith('local', {
+            data: {
+                identifier: authData.username,
+                password: authData.password
+            }
+        }).then(() => {
+            this.$apolloHelpers.onLogin(this.$auth.getToken('local'))
+            //vuexContext.dispatch('getData')
+        })
+            .catch(e => console.log('errorx ', e))
+
+    },
+    newUser(vuexContext, authData) {
+        var authURL = "auth/local/register";
+        var userData = {
+            username: authData.username,
+            email: authData.email,
+            password: authData.password
+        };
+        return this.$axios
+            .$post(authURL, userData)
+            .then(response => console.log(response))
+    },
+    getData(vuexContext) {
+
+
+        return this.$axios.$get('cours', {
+            headers: {
+                Authorization: this.$auth.getToken('local')
+            }
+        }).then(res => {
+            const coursArray = []
+            for (const key in res) {
+                coursArray.push({ ...res[key] })
+            }
+            vuexContext.commit('setCours', coursArray)
+        }).catch(error => console.log(error))
+
+
+    },
+    getDataCour(vuexContext, myContext) {
+        return this.$axios.$get("cours/" + myContext, {
+            headers: {
+                Authorization: this.$auth.getToken('local')
+            }
+        })
+            .then(res => {
+                vuexContext.commit('setCour', res)
+            }).catch((e) => {
+                return e
+                //myContext.error({ statusCode: 401, message: 'Cour pas trouvé' })
+            })
+    },
+    addModule(vuexContext, newModule) {
+        console.log(newModule)
+        this.$axios({
+            method: 'post',
+            url: 'modules',
+            headers: {
+                Authorization: this.$auth.getToken('local')
+            },
+            data: newModule
+        }).then(() => vuexContext.dispatch('getDataCour', newModule.cour.id))
+    }
+}
+
+*/
 
 /*old actions*/
 

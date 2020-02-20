@@ -1,0 +1,8 @@
+query cours{
+  cours{
+    code,
+    icon,
+    id,
+    DisciplinaryContent{Title}
+  }
+}

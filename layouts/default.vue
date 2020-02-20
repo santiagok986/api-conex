@@ -59,7 +59,7 @@
             <v-spacer></v-spacer>
 
             <v-btn text @click="menuusager = false">Cancel</v-btn>
-            <v-btn text @click="$auth.logout()">logout</v-btn>
+            <v-btn text @click="logoutBtn()">logout</v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>
@@ -115,7 +115,8 @@ export default {
   },
   methods:{
     logoutBtn(){
-        
+        this.$auth.logout()
+        this.$apolloHelpers.onLogout()
     }
   }
 };

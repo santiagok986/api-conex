@@ -20,6 +20,16 @@
       </v-container>
     </v-card>
 
+    <v-divider class="my-3"></v-divider>
+
+     <ApolloQuery :query="require('../graphql/cours.gql')">
+        <template slot-scope="{result : {loading, error, data}}">
+          <div v-if="error">{{error}}</div>
+          <div v-if="loading">Cargando..</div>
+          <div>{{data}}</div>
+        </template>
+      </ApolloQuery>
+
     <!-- <v-color-picker class="ma-2" show-swatches swatches-max-height="300px"></v-color-picker> -->
   </v-container>
 </template>
@@ -45,24 +55,24 @@ export default {
       return this.$store.getters.load_cours;
     }
   },
-  async mounted() {
-    try {
-      var result = await this.$axios({
-        method: "post",
-        url: "/graphql",
-        data: {
-          query: `
-                query{
-                  modules{
-                    Title
-                  }
-                }      
-              `
-        }
-      }).then(res => this.dones = res.data.data.modules);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async mounted() {
+  //   try {
+  //     var result = await this.$axios({
+  //       method: "post",
+  //       url: "/graphql",
+  //       data: {
+  //         query: `
+  //               query{
+  //                 modules{
+  //                   Title
+  //                 }
+  //               }      
+  //             `
+  //       }
+  //     }).then(res => this.dones = res.data.data.modules);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 };
 </script>
