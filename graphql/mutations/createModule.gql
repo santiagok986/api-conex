@@ -1,0 +1,35 @@
+mutation(
+  $Title:String,
+  $cour:ID,
+  $IdModule:String,
+  $SubTitle:String,
+  $Icon:String,
+  $Color:String,
+  $Version:String,
+  $Active:Boolean
+){
+  createModule(input:{
+    data:{
+      Title:$Title,
+      cour:$cour,
+      IdModule:$IdModule,
+      SubTitle:$SubTitle,
+      Icon: $Icon,
+      Color:$Color,
+      Version:$Version,
+      Active:$Active
+    }
+  })
+  {
+    module{
+      Title,
+      cour{id}
+      IdModule,
+      SubTitle,
+      Icon,
+      Color,
+      Version,
+      Active
+    }
+  }
+}

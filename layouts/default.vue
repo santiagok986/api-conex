@@ -110,9 +110,6 @@ export default {
       return this.$store.getters.user_info;
     }
   },
-  watch:{
-
-  },
   methods:{
     logoutBtn(){
         this.$auth.logout()

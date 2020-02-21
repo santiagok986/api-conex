@@ -1,0 +1,15 @@
+query cours{
+  cours{
+   code,
+    icon,
+    id,
+    DisciplinaryContent{Title}
+    modules{
+      Title
+      id
+      Icon
+      IdModule
+      SubTitle
+    }
+  }
+}

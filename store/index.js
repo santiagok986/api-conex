@@ -19,7 +19,7 @@ export const mutations = {
 export const actions = {
     nuxtServerInit(vuexContext) {
         if (this.$auth.loggedIn) {
-            console.log('get from init')
+            console.log('get from initx')
             vuexContext.dispatch('getData')
         }
     },
@@ -32,7 +32,7 @@ export const actions = {
             }
         }).then(() => {
             this.$apolloHelpers.onLogin(this.$auth.getToken('local'))
-            //vuexContext.dispatch('getData')
+            vuexContext.dispatch('getData')
         })
             .catch(e => console.log('errorx ', e))
 
@@ -50,45 +50,61 @@ export const actions = {
     },
     getData(vuexContext) {
         let client = this.app.apolloProvider.defaultClient
-       return client
+        return client
             .query({
-                query: require("../graphql/cours.gql")
+                query: require("../graphql/querys/cours.gql")
             })
             .then(res => {
                 const coursArray = []
                 for (const key in res.data.cours) {
                     coursArray.push({ ...res.data.cours[key] })
                 }
-                console.log("res ", res.data.cours)
-                console.log('coursa ', coursArray)
                 vuexContext.commit('setCours', coursArray)
             })
-            .catch(e => console.log('el error es ', e));
+            .catch(e => console.log('Error ', e));
 
     },
     getDataCour(vuexContext, myContext) {
-        return this.$axios.$get("cours/" + myContext, {
-            headers: {
-                Authorization: this.$auth.getToken('local')
-            }
-        })
+        let client = this.app.apolloProvider.defaultClient
+        return client
+            .query({
+                query: require('../graphql/querys/cour.gql'),
+                variables: { id: myContext }
+            })
             .then(res => {
-                vuexContext.commit('setCour', res)
-            }).catch((e) => {
-                return e
-                //myContext.error({ statusCode: 401, message: 'Cour pas trouvé' })
+                vuexContext.commit('setCour', res.data.cour)
             })
     },
     addModule(vuexContext, newModule) {
-        console.log(newModule)
-        this.$axios({
-            method: 'post',
-            url: 'modules',
-            headers: {
-                Authorization: this.$auth.getToken('local')
-            },
-            data: newModule
-        }).then(() => vuexContext.dispatch('getDataCour', newModule.cour.id))
+        
+        let client = this.app.apolloProvider.defaultClient
+        return client
+            .mutate({
+                mutation: require('../graphql/mutations/createModule.gql'),
+                variables: { 
+                    Title: newModule.Title,
+                    cour:newModule.cour.id,
+                    IdModule:newModule.IdModule,
+                    SubTitle:newModule.SubTitle,
+                    Icon:newModule.Icon,
+                    Color:newModule.Color,
+                    Version:newModule.Version,
+                    Active:newModule.Active
+                 }
+            })
+            .then(res => {
+                console.log('res ', res)
+                vuexContext.dispatch('getDataCour', newModule.cour.id)
+            }).catch(e => console.log('e ', e))
+
+        // this.$axios({
+        //     method: 'post',
+        //     url: 'modules',
+        //     headers: {
+        //         Authorization: this.$auth.getToken('local')
+        //     },
+        //     data: newModule
+        // }).then(() => vuexContext.dispatch('getDataCour', newModule.cour.id))
     }
 }
 

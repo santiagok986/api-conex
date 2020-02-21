@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <ApolloQuery :query="require('../../graphql/cours.gql')">
+    <ApolloQuery :query="require('../../graphql/querys/cours.gql')">
         <template slot-scope="{result : {loading, error, data}}">
           <div v-if="error">{{error}}</div>
           <div v-if="loading">Cargando..</div>
@@ -29,7 +29,7 @@
       <v-btn @click="callApollo()">call!</v-btn>
     </div>
      <ApolloMutation
-        :mutation="require('../../graphql/createCours.gql')" :variables="{code}">
+        :mutation="require('../../graphql/mutations/createCours.gql')" :variables="{code}">
         <template v-slot="{ mutate, loading, error }">
           <button :disabled="loading" @click="mutate()">Click me</button>
           <p v-if="error">An error occurred: {{ error }}</p>
@@ -62,7 +62,7 @@ export default {
     callApollo() {
       this.$apollo
         .query({
-          query: require("../../graphql/cours.gql")
+          query: require("../../graphql/querys/cours.gql")
         })
         .then(response => {
           console.log(response);

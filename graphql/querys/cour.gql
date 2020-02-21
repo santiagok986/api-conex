@@ -1,0 +1,15 @@
+ query($id: ID!){
+  cour(id:$id){
+    code,
+    icon,
+    id,
+    DisciplinaryContent{Title}
+    modules{
+      Title
+      id
+      Icon
+      IdModule
+      SubTitle
+    }
+  }
+}

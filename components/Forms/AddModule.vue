@@ -82,7 +82,7 @@
 export default {
    props:{
       coursid:{
-          type:Number,
+          type:String,
           default:null
       }
   }, 
