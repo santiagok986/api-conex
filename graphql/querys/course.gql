@@ -1,0 +1,10 @@
+ query($id: ID!){
+  course(id:$id){
+    Code,
+    id,    
+    modules{
+      Icon,
+      Identity
+      }
+    }
+}

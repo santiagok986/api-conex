@@ -52,12 +52,13 @@ export const actions = {
         let client = this.app.apolloProvider.defaultClient
         return client
             .query({
-                query: require("../graphql/querys/cours.gql")
+                query: require("../graphql/querys/courses.gql")
             })
             .then(res => {
                 const coursArray = []
-                for (const key in res.data.cours) {
-                    coursArray.push({ ...res.data.cours[key] })
+                console.log('res', res)
+                for (const key in res.data.courses) {
+                    coursArray.push({ ...res.data.courses[key] })
                 }
                 vuexContext.commit('setCours', coursArray)
             })
@@ -68,11 +69,11 @@ export const actions = {
         let client = this.app.apolloProvider.defaultClient
         return client
             .query({
-                query: require('../graphql/querys/cour.gql'),
+                query: require('../graphql/querys/course.gql'),
                 variables: { id: myContext }
             })
             .then(res => {
-                vuexContext.commit('setCour', res.data.cour)
+                vuexContext.commit('setCour', res.data.course)
             })
     },
     addModule(vuexContext, newModule) {
@@ -82,19 +83,15 @@ export const actions = {
             .mutate({
                 mutation: require('../graphql/mutations/createModule.gql'),
                 variables: { 
-                    Title: newModule.Title,
-                    cour:newModule.cour.id,
-                    IdModule:newModule.IdModule,
-                    SubTitle:newModule.SubTitle,
+                    course:newModule.course.id,
+                    Identity:newModule.Identity,
                     Icon:newModule.Icon,
-                    Color:newModule.Color,
-                    Version:newModule.Version,
                     Active:newModule.Active
                  }
             })
             .then(res => {
                 console.log('res ', res)
-                vuexContext.dispatch('getDataCour', newModule.cour.id)
+                vuexContext.dispatch('getDataCour', newModule.course.id)
             }).catch(e => console.log('e ', e))
 
         // this.$axios({

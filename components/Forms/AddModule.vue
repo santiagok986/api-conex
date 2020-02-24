@@ -2,12 +2,12 @@
   <div>
     <v-form @submit.prevent="onSubmitted">
       <!-- <v-text-field v-model="projectInfo.isbn" label="ISBN" required outlined></v-text-field> -->
-      <v-text-field v-model="newModule.Title" label="Titre" required outlined></v-text-field>
-      <v-text-field v-model="newModule.IdModule" label="Id Module" required outlined></v-text-field>
-      <v-text-field v-model="newModule.SubTitle" label="Soustitre" required outlined></v-text-field>
+      <!-- <v-text-field v-model="newModule.Title" label="Titre" required outlined></v-text-field> -->
+      <v-text-field v-model="newModule.Identity" label="Id Module" required outlined></v-text-field>
+      <!-- <v-text-field v-model="newModule.SubTitle" label="Soustitre" required outlined></v-text-field> -->
       <v-text-field v-model="newModule.Icon" label="Icône" required outlined></v-text-field>
-      <v-text-field v-model="newModule.Color" label="Color" required outlined></v-text-field>
-      <v-text-field v-model="newModule.Version" label="Version" required outlined></v-text-field>
+      <!-- <v-text-field v-model="newModule.Color" label="Color" required outlined></v-text-field>
+      <v-text-field v-model="newModule.Version" label="Version" required outlined></v-text-field> -->
       <v-switch v-model="newModule.Active" label="Actif"></v-switch>
       <v-btn type="submit">send data</v-btn>
     </v-form>
@@ -89,15 +89,15 @@ export default {
   data() {
     return {
       newModule: {
-        Title: "",
-        Id: "",
-        SubTitle: "",
+        // Title: "",
+        Identity: "",
+        // SubTitle: "",
         Icon: "mdi-ballot",
-        Color: "",
-        Version: "",
+        // Color: "",
+        // Version: "",
         Active: true,
-        Comments: [],
-        "cour": {
+        // Comments: [],
+        "course": {
           id: 1
         }
       }
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     onSubmitted() {
-      this.newModule.cour.id = this.coursid
+      this.newModule.course.id = this.coursid
       this.$store.dispatch('addModule', this.newModule)
       .then(()=>{this.$emit("closeNewModule", false);})
 

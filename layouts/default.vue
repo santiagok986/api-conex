@@ -4,10 +4,11 @@
       <v-list>
         <v-list-item v-for="(cour, i) in cours" :key="i" :to="`/cours/cour/`+cour.id" router exact>
           <v-list-item-action>
-            <v-icon>{{ cour.icon }}</v-icon>
+            <v-icon v-if="cour.Icon != null">{{cour.Icon}}</v-icon>
+            <v-icon v-else>mdi-school</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="cour.code" />
+            <v-list-item-title v-text="cour.Code" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -117,4 +118,23 @@ export default {
     }
   }
 };
+
+/*à
+query courses{
+  courses{
+   code,
+    icon,
+    id,
+    DisciplinaryContent{Title}
+    modules{
+      Title
+      id
+      Icon
+      IdModule
+      SubTitle
+    }
+  }
+}
+
+*/
 </script>

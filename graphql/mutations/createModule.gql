@@ -1,35 +1,21 @@
 mutation(
-  $Title:String,
-  $cour:ID,
-  $IdModule:String,
-  $SubTitle:String,
+  $course:ID,
   $Icon:String,
-  $Color:String,
-  $Version:String,
+  $Identity:String,
   $Active:Boolean
 ){
   createModule(input:{
     data:{
-      Title:$Title,
-      cour:$cour,
-      IdModule:$IdModule,
-      SubTitle:$SubTitle,
+      course:$course,
+      Identity:$Identity,
       Icon: $Icon,
-      Color:$Color,
-      Version:$Version,
       Active:$Active
     }
   })
   {
     module{
-      Title,
-      cour{id}
-      IdModule,
-      SubTitle,
+      course{id}
       Icon,
-      Color,
-      Version,
-      Active
     }
   }
 }

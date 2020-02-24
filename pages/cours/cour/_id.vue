@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    le: {{cours}}
+    le: {{infoCours}}
     <h3>
-      <v-icon>{{infoCours.icon}}</v-icon>
-      {{infoCours.code}}
+      <v-icon>{{infoCours.Icon}}</v-icon>
+      {{infoCours.Identity}}
     </h3>
-    <p>{{infoCours.DisciplinaryContent[0].Title}}</p>
+    <!-- <p>{{infoCours.DisciplinaryContent[0].Title}}</p> -->
 
     <v-divider class="my-3"></v-divider>
     <v-btn @click="dialogModule = true">Ajouter Module</v-btn>
@@ -31,7 +31,7 @@
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title v-text="mymodule.Title"></v-list-item-title>
+              <v-list-item-title v-text="mymodule.Identity"></v-list-item-title>
             </v-list-item-content>
           </template>
 

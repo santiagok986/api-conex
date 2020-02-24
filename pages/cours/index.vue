@@ -1,40 +1,42 @@
 <template>
   <v-container>
-    <ApolloQuery :query="require('../../graphql/querys/cours.gql')">
-        <template slot-scope="{result : {loading, error, data}}">
-          <div v-if="error">{{error}}</div>
-          <div v-if="loading">Cargando..</div>
-          <div>{{data}}</div>
-        </template>
-      </ApolloQuery>
+    <ApolloQuery :query="require('../../graphql/querys/courses.gql')">
+      <template slot-scope="{result : {loading, error, data}}">
+        <div v-if="error">{{error}}</div>
+        <div v-if="loading">Cargando..</div>
+        <div>{{data}}</div>
+      </template>
+    </ApolloQuery>
     <v-divider></v-divider>
-    {{me}}
-    {{modules}}
+     <ApolloMutation
+      :mutation="require('../../graphql/mutations/createCours.gql')"
+      :variables="{code}"
+    >
+      <template v-slot="{ mutate, loading, error }">
+        <button :disabled="loading" @click="mutate()">Click me</button>
+        <p v-if="error">An error occurred: {{ error }}</p>
+      </template>
+    </ApolloMutation>
+    <v-btn @click="callApollo()">call!</v-btn>
     <v-divider />
 
     <v-list>
       <v-list-item v-for="(cour, i) in cours" :key="i" :to="`/cours/cour/`+cour.id" router exact>
-        <v-list-item-action>
-          <v-icon>{{ cour.icon }}</v-icon>
-        </v-list-item-action>
+        <!-- <v-list-item-action>{{ cour.Icon }}</v-list-item-action> -->
         <v-list-item-content>
-          <v-list-item-title v-text="cour.code" />
+          <v-list-item-title v-text="cour.Code" />
         </v-list-item-content>
       </v-list-item>
     </v-list>
+
     <v-divider></v-divider>
     <div v-for="cour in cours" :key="cour.id">
       <p class="mb-0" v-for="(value, key) in cour" :key="key">{{key}}:{{value}}</p>
       <v-divider></v-divider>
-      <v-btn @click="callApollo()">call!</v-btn>
+      
     </div>
-     <ApolloMutation
-        :mutation="require('../../graphql/mutations/createCours.gql')" :variables="{code}">
-        <template v-slot="{ mutate, loading, error }">
-          <button :disabled="loading" @click="mutate()">Click me</button>
-          <p v-if="error">An error occurred: {{ error }}</p>
-        </template>
-      </ApolloMutation>
+
+   
   </v-container>
 </template>
 
@@ -46,8 +48,8 @@ export default {
     return {
       token: null,
       modules: null,
-      me:null,
-      code:"ahora si"
+      me: null,
+      code: "HGL1160"
     };
   },
   asyncData({ context, store, app }) {
@@ -62,12 +64,12 @@ export default {
     callApollo() {
       this.$apollo
         .query({
-          query: require("../../graphql/querys/cours.gql")
+          query: require("../../graphql/querys/courses.gql")
         })
         .then(response => {
           console.log(response);
         })
-        .catch(e => console.log('el error es ',  e));
+        .catch(e => console.log("el error es ", e));
     }
   },
   apollo: {
@@ -81,8 +83,8 @@ export default {
   },
   mounted() {
     this.token = this.$auth.getToken("local");
-    console.log(this.$apollo.provider.defaultClient)
-     console.log('token ', this.$apolloHelpers.getToken())
+    console.log(this.$apollo.provider.defaultClient);
+    console.log("token ", this.$apolloHelpers.getToken());
   }
 };
 </script>
